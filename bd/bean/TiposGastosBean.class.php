@@ -5,31 +5,31 @@
 		private $descripcion;
 		private $activo;
 		
-		public static function getId() {
+		public function getId() {
 			return $this->id;
 		}
-		public static function setId($id) {
+		public function setId($id) {
 			$this->id = $id;
 		}
 		
-		public static function getNombre() {
+		public function getNombre() {
 			return $this->nombre;
 		}
-		public static function setNombre($nombre) {
+		public function setNombre($nombre) {
 			$this->nombre = $nombre;
 		}
 		
-		public static function getDescripcion() {
+		public function getDescripcion() {
 			return $this->descripcion;
 		}
-		public static function setDescripcion($descripcion) {
+		public function setDescripcion($descripcion) {
 			$this->descripcion = $descripcion;
 		}
 		
-		public static function getEstado() {
+		public function getEstado() {
 			return $this->activo;
 		}
-		public static function setEstado($activo) {
+		public function setEstado($activo) {
 			$this->activo = $activo;
 		}
 	}
