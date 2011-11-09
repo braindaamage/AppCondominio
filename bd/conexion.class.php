@@ -4,7 +4,7 @@
 	define ("PASS","123456");  
 	define ("BASE","condominiobd");  
 	
-	class Conexion{  
+	class Conexion {  
 		private $conn;
 		private static $instance;
 		
