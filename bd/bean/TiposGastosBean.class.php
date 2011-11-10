@@ -5,6 +5,13 @@
 		private $descripcion;
 		private $activo;
 		
+		public function __construct() {
+			$this->id = null;
+			$this->nombre = null;
+			$this->descripcion = null;
+			$this->activo = null;
+		}
+		
 		public function getId() {
 			return $this->id;
 		}

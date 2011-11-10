@@ -8,6 +8,16 @@
 		private $pagado;
 		private $fechaVencimiento;
 		
+	public function __construct() {
+			$this->id = null;
+			$this->numeroDepartamento = null;
+			$this->periodo = null;
+			$this->numeroBoleta = null;
+			$this->monto = null;
+			$this->pagado = null;
+			$this->fechaVencimiento = null;
+		}
+		
 		public function getId() {
 			return $this->id;
 		}

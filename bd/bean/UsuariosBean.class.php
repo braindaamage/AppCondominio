@@ -10,6 +10,18 @@
 		private $password;
 		private $activo;
 		
+	public function __construct() {
+			$this->id = null;
+			$this->rut = null;
+			$this->nombres = null;
+			$this->apellidoPaterno = null;
+			$this->apellidoMaterno = null;
+			$this->telefono = null;
+			$this->email = null;
+			$this->password = null;
+			$this->activo = null;
+		}
+		
 		public function getId() {
 			return $this->id;
 		}

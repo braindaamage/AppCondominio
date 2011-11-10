@@ -5,6 +5,13 @@
 		private $periodo;
 		private $monto;
 		
+		public function __construct() {
+			$this->id = null;
+			$this->idTipoGasto = null;
+			$this->periodo = null;
+			$this->monto = null;
+		}
+		
 		public function getId() {
 			return $this->id;
 		}

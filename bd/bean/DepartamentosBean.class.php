@@ -6,6 +6,14 @@
 		private $porcentaje;
 		private $idUsuario;
 		
+		public function __construct() {
+			$this->numero = null;
+			$this->piso = null;
+			$this->metrosCuadrados = null;
+			$this->porcentaje = null;
+			$this->idUsuario = null;
+		}
+		
 		public function getNumero() {
 			return $this->numero;
 		}
