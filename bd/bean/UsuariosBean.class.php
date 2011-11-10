@@ -29,6 +29,13 @@
 			$this->id = $id;
 		}
 		
+		public function getRut() {
+			return $this->rut;
+		}
+		public function setRut($rut) {
+			$this->rut = $rut;
+		}
+		
 		public function getNombres() {
 			return $this->nombres;
 		}
