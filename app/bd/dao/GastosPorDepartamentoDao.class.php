@@ -19,6 +19,7 @@
 	class GastosPorDepartamentoDAO {
 		private $conexion;
 		private static $instance;
+		private $error;
 		
 		public function __construct() {
 			$this->conexion = Conexion::getInstance();
@@ -36,11 +37,16 @@
 			trigger_error('Clone no se permite.', E_USER_ERROR);
 		}
 		
+		public function getError() {
+			return $this->error;
+		}
+		
 		public function getAll() {
 			$lista = new ArrayObject();
 			
 			if (!$consulta = $this->conexion->consulta(SELECT_ALL)) {
-				return $this->conexion->mensajeError();
+				$this->error = $this->conexion->mensajeError();
+				return false;
 			}
 			
 			while ($registro = $this->conexion->siguiente($consulta)) {
@@ -63,7 +69,8 @@
 			$sql = COUNT;
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				return $this->conexion->mensajeError();
+				$this->error = $this->conexion->mensajeError();
+				return false;
 			}
 			
 			$resultado = $this->conexion->siguiente($consulta);
@@ -75,7 +82,8 @@
 			$sql = str_replace("&1", $numero, $sql);
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				return $this->conexion->mensajeError();
+				$this->error = $this->conexion->mensajeError();
+				return false;
 			}
 			
 			$resultado = $this->conexion->siguiente($consulta);
@@ -87,7 +95,8 @@
 			$sql = str_replace("&1", $id, $sql);
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				return $this->conexion->mensajeError();
+				$this->error = $this->conexion->mensajeError();
+				return false;
 			}
 			$gastosPorDepartamento = new GastosPorDepartamentoBean();
 			
@@ -110,7 +119,8 @@
 			$sql = str_replace("&1", $numero, $sql);
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				return $this->conexion->mensajeError();
+				$this->error = $this->conexion->mensajeError();
+				return false;
 			}
 			
 			$lista = new ArrayObject();
@@ -142,10 +152,11 @@
 			$sql = str_replace("&6", $gastosPorDepartamento->getFechaVencimiento(), $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
-				return $this->conexion->mensajeError();
+				$this->error = $this->conexion->mensajeError();
+				return false;
 			}
 			
-			return null;
+			return true;
 		}
 		
 		public function update($gastosPorDepartamento) {
@@ -159,10 +170,11 @@
 			$sql = str_replace("&7", $gastosPorDepartamento->getId(), $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
-				return $this->conexion->mensajeError();
+				$this->error = $this->conexion->mensajeError();
+				return false;
 			}
 			
-			return null;
+			return true;
 		}
 		
 	public function delete($id) {
@@ -170,10 +182,11 @@
 			$sql = str_replace("&1", $id, $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
-				return $this->conexion->mensajeError();
+				$this->error = $this->conexion->mensajeError();
+				return false;
 			}
 			
-			return null;
+			return true;
 		}
 	}
 ?>

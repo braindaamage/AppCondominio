@@ -17,6 +17,7 @@
 	class TiposGastosDao {
 		private $conexion;
 		private static $instance;
+		private $error;
 		
 		public function __construct() {
 			$this->conexion = Conexion::getInstance();
@@ -34,11 +35,16 @@
 			trigger_error('Clone no se permite.', E_USER_ERROR);
 		}
 		
+		public function getError() {
+			return $this->error;
+		}
+		
 		public function getAll() {
 			$lista = new ArrayObject();
 			
 			if (!$consulta = $this->conexion->consulta(SELECT_ALL)) {
-				return $this->conexion->mensajeError();
+				$this->error = $this->conexion->mensajeError();
+				return false;
 			}
 			
 			while ($registro = $this->conexion->siguiente($consulta)) {
@@ -58,7 +64,8 @@
 			$sql = COUNT;
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				return $this->conexion->mensajeError();
+				$this->error = $this->conexion->mensajeError();
+				return false;
 			}
 			
 			$resultado = $this->conexion->siguiente($consulta);
@@ -70,7 +77,8 @@
 			$sql = str_replace("&1", $id, $sql);
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				return $this->conexion->mensajeError();
+				$this->error = $this->conexion->mensajeError();
+				return false;
 			}
 			$tipoGasto = new TiposGastosBean();
 			
@@ -91,10 +99,11 @@
 			$sql = str_replace("&3", $TipoGasto->getEstado(), $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
-				return $this->conexion->mensajeError();
+				$this->error = $this->conexion->mensajeError();
+				return false;
 			}
 			
-			return null;
+			return true;
 		}
 		
 		public function update($TipoGasto) {
@@ -105,10 +114,11 @@
 			$sql = str_replace("&4", $TipoGasto->getId(), $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
-				return $this->conexion->mensajeError();
+				$this->error = $this->conexion->mensajeError();
+				return false;
 			}
 			
-			return null;
+			return true;
 		}
 		
 	public function delete($id) {
@@ -116,10 +126,11 @@
 			$sql = str_replace("&1", $id, $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
-				return $this->conexion->mensajeError();
+				$this->error = $this->conexion->mensajeError();
+				return false;
 			}
 			
-			return null;
+			return true;
 		}
 	}
 ?>
