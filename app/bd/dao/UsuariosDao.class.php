@@ -9,10 +9,10 @@
 	
 	define ("SELECT_ALL","SELECT * FROM Usuarios");
 	define ("COUNT","SELECT COUNT(*) FROM Usuarios");
-	define ("SELECT_BY_ID","SELECT * FROM Usuarios WHERE id = &1");
+	define ("SELECT_BY_RUT","SELECT * FROM Usuarios WHERE rut = &1");
 	define ("INSERT","INSERT INTO Usuarios (rut, nombres, apellidoPaterno, apellidoMaterno, telefono, email, password, activo) VALUES ('&1','&2','&3','&4',&5,'&6','&7',&8)");
-	define ("UPDATE","UPDATE Usuarios SET rut = '&1', nombres = '&2', apellidoPaterno = '&3', apellidoMaterno = '&4', telefono = &5, email = '&6', password = '&7', activo = &8 WHERE id = &9");
-	define ("DELETE","DELETE FROM Usuarios WHERE id = &1");
+	define ("UPDATE","UPDATE Usuarios SET nombres = '&1', apellidoPaterno = '&2', apellidoMaterno = '&3', telefono = &4, email = '&5', password = '&6', activo = &7 WHERE rut = &8");
+	define ("DELETE","DELETE FROM Usuarios WHERE rut = &1");
 	
 	class UsuariosDao {
 		private $conexion;
@@ -49,7 +49,6 @@
 			
 			while ($registro = $this->conexion->siguiente($consulta)) {
 				$usuario = new UsuariosBean();
-				$usuario->setId($registro['id']);
 				$usuario->setRut($registro['rut']);
 				$usuario->setNombres($registro['nombres']);
 				$usuario->setApellidoPaterno($registro['apellidoPaterno']);
@@ -77,9 +76,9 @@
 			return $resultado[0];
 		}
 		
-		public function getById($id) {
-			$sql = SELECT_BY_ID;
-			$sql = str_replace("&1", $id, $sql);
+		public function getByRut($rut) {
+			$sql = SELECT_BY_RUT;
+			$sql = str_replace("&1", $rut, $sql);
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
 				$this->error = $this->conexion->mensajeError();
@@ -88,7 +87,6 @@
 			$usuario = new UsuariosBean();
 			
 			while ($registro = $this->conexion->siguiente($consulta)) {
-				$usuario->setId($registro['id']);
 				$usuario->setRut($registro['rut']);
 				$usuario->setNombres($registro['nombres']);
 				$usuario->setApellidoPaterno($registro['apellidoPaterno']);
@@ -123,15 +121,15 @@
 		
 		public function update($usuario) {
 			$sql = UPDATE;
-			$sql = str_replace("&1", $usuario->getRut(), $sql);
-			$sql = str_replace("&2", $usuario->getNombres(), $sql);
-			$sql = str_replace("&3", $usuario->getApellidoPaterno(), $sql);
-			$sql = str_replace("&4", $usuario->getApellidoMaterno(), $sql);
-			$sql = str_replace("&5", $usuario->getTelefono(), $sql);
-			$sql = str_replace("&6", $usuario->getEmail(), $sql);
-			$sql = str_replace("&7", $usuario->getPassword(), $sql);
-			$sql = str_replace("&8", $usuario->getEstado(), $sql);
-			$sql = str_replace("&9", $usuario->getId(), $sql);
+			
+			$sql = str_replace("&1", $usuario->getNombres(), $sql);
+			$sql = str_replace("&2", $usuario->getApellidoPaterno(), $sql);
+			$sql = str_replace("&3", $usuario->getApellidoMaterno(), $sql);
+			$sql = str_replace("&4", $usuario->getTelefono(), $sql);
+			$sql = str_replace("&5", $usuario->getEmail(), $sql);
+			$sql = str_replace("&6", $usuario->getPassword(), $sql);
+			$sql = str_replace("&7", $usuario->getEstado(), $sql);
+			$sql = str_replace("&8", $usuario->getRut(), $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
 				$this->error = $this->conexion->mensajeError();
@@ -141,9 +139,9 @@
 			return true;
 		}
 		
-	public function delete($id) {
+	public function delete($rut) {
 			$sql = DELETE;
-			$sql = str_replace("&1", $id, $sql);
+			$sql = str_replace("&1", $rut, $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
 				$this->error = $this->conexion->mensajeError();

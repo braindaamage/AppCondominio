@@ -1,6 +1,5 @@
 <?php
 	class UsuariosBean {
-		private $id;
 		private $rut;
 		private $nombres;
 		private $apellidoPaterno;
@@ -11,7 +10,6 @@
 		private $activo;
 		
 	public function __construct() {
-			$this->id = null;
 			$this->rut = null;
 			$this->nombres = null;
 			$this->apellidoPaterno = null;
@@ -20,13 +18,6 @@
 			$this->email = null;
 			$this->password = null;
 			$this->activo = null;
-		}
-		
-		public function getId() {
-			return $this->id;
-		}
-		public function setId($id) {
-			$this->id = $id;
 		}
 		
 		public function getRut() {
