@@ -1,0 +1,35 @@
+body {
+	font-size: 80%;
+	padding: 3% 5%;
+}
+
+.titulo {
+	padding-left: 20px;
+}
+
+.contenido {
+	padding-left: 25px;
+}
+
+.ui-widget-content {
+	padding: 3%;
+}
+
+.menu {
+	padding-top: 30px;
+}
+.menu dt, .menu h4 {
+    color: #E87B10;
+    font: 1.1em "Trebuchet MS","Helvetica","Arial","Verdana","sans-serif";
+}
+
+.buscador {
+	text-align: right;
+}
+
+.acciones {
+	text-size: 3pt;
+}
+
+div.contenido table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+div.contenido table td, div.contenido table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
