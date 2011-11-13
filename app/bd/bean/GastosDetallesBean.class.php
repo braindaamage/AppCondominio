@@ -2,12 +2,14 @@
 	class GastosDetallesBean {
 		private $id;
 		private $idTipoGasto;
+		private $nombre;
 		private $periodo;
 		private $monto;
 		
 		public function __construct() {
 			$this->id = null;
 			$this->idTipoGasto = null;
+			$this->nombre = null;
 			$this->periodo = null;
 			$this->monto = null;
 		}
@@ -24,6 +26,13 @@
 		}
 		public function setIdTipoGasto($idTipoGasto) {
 			$this->idTipoGasto = $idTipoGasto;
+		}
+		
+		public function getNombre() {
+			return $this->nombre;
+		}
+		public function setNombre($nombre) {
+			$this->nombre = $nombre;
 		}
 		
 		public function getPeriodo() {

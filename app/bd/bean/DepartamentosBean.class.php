@@ -11,7 +11,7 @@
 			$this->piso = null;
 			$this->metrosCuadrados = null;
 			$this->porcentaje = null;
-			$this->idUsuario = null;
+			$this->usuario = null;
 		}
 		
 		public function getNumero() {
@@ -42,11 +42,11 @@
 			$this->porcentaje = $porcentaje;
 		}
 		
-		public function getIdUsuario() {
-			return $this->idUsuario;
+		public function getUsuario() {
+			return $this->usuario;
 		}
-		public function setIdUsuario($idUsuario) {
-			$this->idUsuario = $idUsuario;
+		public function setUsuario($usuario) {
+			$this->usuario = $usuario;
 		}
 	}
 ?>
