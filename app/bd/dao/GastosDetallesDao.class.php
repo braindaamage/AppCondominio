@@ -18,7 +18,7 @@
 	class GastosDetallesDao {
 		private $conexion;
 		private static $instance;
-		private $error;
+		private $error = Array();
 		
 		public function __construct() {
 			$this->conexion = Conexion::getInstance();
@@ -44,7 +44,8 @@
 			$lista = new ArrayObject();
 			
 			if (!$consulta = $this->conexion->consulta(SELECT_ALL)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -65,7 +66,8 @@
 			$sql = COUNT;
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -78,7 +80,8 @@
 			$sql = str_replace("&1", $id, $sql);
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			$detalleGasto = new GastosDetallesBean();
@@ -100,7 +103,8 @@
 			$sql = str_replace("&1", $periodo, $sql);
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -124,7 +128,8 @@
 			$sql = str_replace("&3", $detalleGasto->getMonto(), $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -139,7 +144,8 @@
 			$sql = str_replace("&4", $detalleGasto->getId(), $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -151,7 +157,8 @@
 			$sql = str_replace("&1", $id, $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			

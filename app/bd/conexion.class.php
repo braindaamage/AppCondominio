@@ -40,7 +40,11 @@
 		}  
 		
 		public function mensajeError() {
-			return "ERROR: ".mysql_errno($this->conn)." - ".mysql_error($this->conn);  
-		}  
+			return mysql_error($this->conn);  
+		}
+		
+		public function numeroError() {
+			return mysql_errno($this->conn);
+		}
 	}
 ?>

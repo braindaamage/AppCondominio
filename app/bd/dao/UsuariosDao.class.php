@@ -17,7 +17,7 @@
 	class UsuariosDao {
 		private $conexion;
 		private static $instance;
-		private $error;
+		private $error = Array();
 		
 		public function __construct() {
 			$this->conexion = Conexion::getInstance();
@@ -43,7 +43,8 @@
 			$lista = new ArrayObject();
 			
 			if (!$consulta = $this->conexion->consulta(SELECT_ALL)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -68,7 +69,8 @@
 			$sql = COUNT;
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -81,7 +83,8 @@
 			$sql = str_replace("&1", $rut, $sql);
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			$usuario = new UsuariosBean();
@@ -112,7 +115,8 @@
 			$sql = str_replace("&8", $usuario->getEstado(), $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -132,7 +136,8 @@
 			$sql = str_replace("&8", $usuario->getRut(), $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -144,7 +149,8 @@
 			$sql = str_replace("&1", $rut, $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			

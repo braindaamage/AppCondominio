@@ -19,7 +19,7 @@
 	class DepartamentosDao {
 		private $conexion;
 		private static $instance;
-		private $error;
+		private $error = Array();
 		
 		public function __construct() {
 			$this->conexion = Conexion::getInstance();
@@ -45,7 +45,8 @@
 			$lista = new ArrayObject();
 			
 			if (!$consulta = $this->conexion->consulta(SELECT_ALL)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -67,7 +68,8 @@
 			$sql = COUNT;
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -80,7 +82,8 @@
 			$sql = str_replace("&1", $idUsuario, $sql);
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -93,7 +96,8 @@
 			$sql = str_replace("&1", $numero, $sql);
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			$departamento = new DepartamentosBean();
@@ -116,7 +120,8 @@
 			$sql = str_replace("&1", $idUsuario, $sql);
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -145,7 +150,8 @@
 			$sql = str_replace("&5", $departamento->getIdUsuario(), $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -161,7 +167,8 @@
 			$sql = str_replace("&5", $departamento->getNumero(), $sql);
 						
 			if(!$this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
@@ -173,7 +180,8 @@
 			$sql = str_replace("&1", $numero, $sql);
 			
 			if(!$this->conexion->consulta($sql)) {
-				$this->error = $this->conexion->mensajeError();
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
 				return false;
 			}
 			
