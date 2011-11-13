@@ -11,9 +11,9 @@
 	define ("COUNT","SELECT COUNT(*) FROM Departamentos");
 	define ("COUNT_BY_USUARIO","SELECT COUNT(*) FROM Departamentos WHERE idUsuario = &1");
 	define ("SELECT_BY_NUMERO","SELECT * FROM Departamentos WHERE numero = &1");
-	define ("SELECT_BY_USUARIO","SELECT * FROM Departamentos WHERE idUsuario = &1");
-	define ("INSERT","INSERT INTO Departamentos (numero, piso, metrosCuadrados, porcentaje, idUsuario) VALUES ('&1','&2','&3','&4',&5)");
-	define ("UPDATE","UPDATE Departamentos SET piso = &1, metrosCuadrados = &2, porcentaje = &3, idUsuario = &4 WHERE numero = &5");
+	define ("SELECT_BY_USUARIO","SELECT * FROM Departamentos WHERE usuario = &1");
+	define ("INSERT","INSERT INTO Departamentos (numero, piso, metrosCuadrados, porcentaje, usuario) VALUES ('&1','&2','&3','&4',&5)");
+	define ("UPDATE","UPDATE Departamentos SET piso = &1, metrosCuadrados = &2, porcentaje = &3, usuario = '&4' WHERE numero = &5");
 	define ("DELETE","DELETE FROM Departamentos WHERE numero = &1");
 	
 	class DepartamentosDao {
@@ -47,7 +47,7 @@
 			if (!$consulta = $this->conexion->consulta(SELECT_ALL)) {
 				$this->error[0] = $this->conexion->numeroError();
 				$this->error[1] = $this->conexion->mensajeError();
-				return false;
+				return $this->error;
 			}
 			
 			while ($registro = $this->conexion->siguiente($consulta)) {
@@ -56,7 +56,7 @@
 				$departamento->setPiso($registro['piso']);
 				$departamento->setMetrosCuadrados($registro['metrosCuadrados']);
 				$departamento->setPorcentaje($registro['porcentaje']);
-				$departamento->setIdUsuario($registro['idUsuario']);
+				$departamento->setUsuario($registro['usuario']);
 								
 				$lista->append($departamento);
 			}
@@ -77,9 +77,9 @@
 			return $resultado[0];
 		}
 		
-		public function getCountByUsuario ($idUsuario) {
+		public function getCountByUsuario ($usuario) {
 			$sql = COUNT_BY_USUARIO;
-			$sql = str_replace("&1", $idUsuario, $sql);
+			$sql = str_replace("&1", $usuario, $sql);
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
 				$this->error[0] = $this->conexion->numeroError();
@@ -107,17 +107,17 @@
 				$departamento->setPiso($registro['piso']);
 				$departamento->setMetrosCuadrados($registro['metrosCuadrados']);
 				$departamento->setPorcentaje($registro['porcentaje']);
-				$departamento->setIdUsuario($registro['idUsuario']);
+				$departamento->setUsuario($registro['usuario']);
 			}
 			
 			return $departamento;
 		}
 		
-		public function getByUsuario($idUsuario) {
+		public function getByUsuario($usuario) {
 			$lista = new ArrayObject();
 			
 			$sql = SELECT_BY_USUARIO;
-			$sql = str_replace("&1", $idUsuario, $sql);
+			$sql = str_replace("&1", $usuario, $sql);
 			
 			if (!$consulta = $this->conexion->consulta($sql)) {
 				$this->error[0] = $this->conexion->numeroError();
@@ -133,7 +133,7 @@
 				$departamento->setPiso($registro['piso']);
 				$departamento->setMetrosCuadrados($registro['metrosCuadrados']);
 				$departamento->setPorcentaje($registro['porcentaje']);
-				$departamento->setIdUsuario($registro['idUsuario']);
+				$departamento->setUsuario($registro['usuario']);
 								
 				$lista->append($departamento);
 			}
@@ -147,15 +147,17 @@
 			$sql = str_replace("&2", $departamento->getPiso(), $sql);
 			$sql = str_replace("&3", $departamento->getMetrosCuadrados(), $sql);
 			$sql = str_replace("&4", $departamento->getPorcentaje(), $sql);
-			$sql = str_replace("&5", $departamento->getIdUsuario(), $sql);
+			$sql = str_replace("&5", $departamento->getUsuario(), $sql);
 			
-			if(!$this->conexion->consulta($sql)) {
+			$ejecucion = $this->conexion->consulta($sql);
+			
+			if($ejecucion != 1) {
 				$this->error[0] = $this->conexion->numeroError();
 				$this->error[1] = $this->conexion->mensajeError();
-				return false;
+				return $this->error;
 			}
 			
-			return true;
+			return $ejecucion;
 		}
 		
 		public function update($departamento) {
@@ -163,29 +165,33 @@
 			$sql = str_replace("&1", $departamento->getPiso(), $sql);
 			$sql = str_replace("&2", $departamento->getMetrosCuadrados(), $sql);
 			$sql = str_replace("&3", $departamento->getPorcentaje(), $sql);
-			$sql = str_replace("&4", $departamento->getIdUsuario(), $sql);
+			$sql = str_replace("&4", $departamento->getUsuario(), $sql);
 			$sql = str_replace("&5", $departamento->getNumero(), $sql);
+			
+			$ejecucion = $this->conexion->consulta($sql);
 						
-			if(!$this->conexion->consulta($sql)) {
+			if($ejecucion != 1) {
 				$this->error[0] = $this->conexion->numeroError();
 				$this->error[1] = $this->conexion->mensajeError();
-				return false;
+				return $this->error;
 			}
 			
-			return true;
+			return $ejecucion;
 		}
 		
 	public function delete($numero) {
 			$sql = DELETE;
 			$sql = str_replace("&1", $numero, $sql);
 			
-			if(!$this->conexion->consulta($sql)) {
+			$ejecucion = $this->conexion->consulta($sql);
+			
+			if($ejecucion != 1) {
 				$this->error[0] = $this->conexion->numeroError();
 				$this->error[1] = $this->conexion->mensajeError();
-				return false;
+				return $this->error;
 			}
 			
-			return true;
+			return $ejecucion;
 		}
 	}
 ?>

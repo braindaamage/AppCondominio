@@ -10,6 +10,7 @@
 	define ("SELECT_ALL","SELECT * FROM TiposGastos");
 	define ("COUNT","SELECT COUNT(*) FROM TiposGastos");
 	define ("SELECT_BY_ID","SELECT * FROM TiposGastos WHERE id = &1");
+	define ("SELECT_BY_NOMBRE","SELECT * FROM TiposGastos WHERE nombre like '%&1%'");
 	define ("INSERT","INSERT INTO TiposGastos (nombre, descripcion, activo) VALUES ('&1','&2','&3')");
 	define ("UPDATE","UPDATE TiposGastos SET nombre = '&1', descripcion = '&2', activo = &3 WHERE id = &4");
 	define ("DELETE","DELETE FROM TiposGastos WHERE id = &1");
@@ -81,7 +82,7 @@
 			if (!$consulta = $this->conexion->consulta($sql)) {
 				$this->error[0] = $this->conexion->numeroError();
 				$this->error[1] = $this->conexion->mensajeError();
-				return false;
+				return $this->error;
 			}
 			$tipoGasto = new TiposGastosBean();
 			
@@ -95,19 +96,45 @@
 			return $tipoGasto;
 		}
 		
+		public function getByNombre($nombre) {
+			$lista = new ArrayObject();
+			$sql = SELECT_BY_NOMBRE;
+			$sql = str_replace("&1", $nombre, $sql);
+			
+			if (!$consulta = $this->conexion->consulta($sql)) {
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
+				return $this->error;
+			}
+			
+			while ($registro = $this->conexion->siguiente($consulta)) {
+				$tipoGasto = new TiposGastosBean();
+				$tipoGasto->setId($registro['id']);
+				$tipoGasto->setNombre($registro['nombre']);
+				$tipoGasto->setDescripcion($registro['descripcion']);
+				$tipoGasto->setEstado($registro['activo']);
+				
+				$lista->append($tipoGasto);
+			}
+			
+			return $lista;
+		}
+		
 		public function insert($TipoGasto) {
 			$sql = INSERT;
 			$sql = str_replace("&1", $TipoGasto->getNombre(), $sql);
 			$sql = str_replace("&2", $TipoGasto->getDescripcion(), $sql);
 			$sql = str_replace("&3", $TipoGasto->getEstado(), $sql);
 			
-			if(!$this->conexion->consulta($sql)) {
+			$ejecucion = $this->conexion->consulta($sql);
+			
+			if($ejecucion != 1) {
 				$this->error[0] = $this->conexion->numeroError();
 				$this->error[1] = $this->conexion->mensajeError();
-				return false;
+				return $this->error;
 			}
 			
-			return true;
+			return $ejecucion;
 		}
 		
 		public function update($TipoGasto) {
@@ -117,26 +144,30 @@
 			$sql = str_replace("&3", $TipoGasto->getEstado(), $sql);
 			$sql = str_replace("&4", $TipoGasto->getId(), $sql);
 			
-			if(!$this->conexion->consulta($sql)) {
+			$ejecucion = $this->conexion->consulta($sql);
+			
+			if($ejecucion != 1) {
 				$this->error[0] = $this->conexion->numeroError();
 				$this->error[1] = $this->conexion->mensajeError();
-				return false;
+				return $this->error;
 			}
 			
-			return true;
+			return $ejecucion;
 		}
 		
 	public function delete($id) {
 			$sql = DELETE;
 			$sql = str_replace("&1", $id, $sql);
 			
-			if(!$this->conexion->consulta($sql)) {
+			$ejecucion = $this->conexion->consulta($sql);
+			
+			if($ejecucion != 1) {
 				$this->error[0] = $this->conexion->numeroError();
 				$this->error[1] = $this->conexion->mensajeError();
-				return false;
+				return $this->error;
 			}
 			
-			return true;
+			return $ejecucion;
 		}
 	}
 ?>

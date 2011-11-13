@@ -12,6 +12,7 @@
 	define ("COUNT_BY_NUMERO","SELECT COUNT(*) FROM GastosPorDepartamento WHERE numeroDepartamento = &1");
 	define ("SELECT_BY_ID","SELECT * FROM GastosPorDepartamento WHERE id = &1");
 	define ("SELECT_BY_NUMERO","SELECT * FROM GastosPorDepartamento WHERE numeroDepartamento = &1");
+	define ("SELECT_BY_PERIODO","SELECT * FROM GastosPorDepartamento WHERE periodo = &1");
 	define ("INSERT","INSERT INTO GastosPorDepartamento (numeroDepartamento, periodo, numeroBoleta, monto, pagado, fechaVencimiento) VALUES (&1,&2,&3,&4,&5,&6)");
 	define ("UPDATE","UPDATE GastosPorDepartamento SET numeroDepartamento = &1, periodo = &2, numeroBoleta = &3, monto = &4, pagado = &5, fechaVencimiento = &6 WHERE id = &7");
 	define ("DELETE","DELETE FROM GastosPorDepartamento WHERE id = &1");
@@ -145,6 +146,36 @@
 			
 			return $lista;
 				
+		}
+		
+		public function getByPeriodo($periodo) {
+			$sql = SELECT_BY_PERIODO;
+			$sql = str_replace("&1", $periodo, $sql);
+			
+			$consulta = $this->conexion->consulta($sql);
+			
+			if (!$consulta) {
+				$this->error[0] = $this->conexion->numeroError();
+				$this->error[1] = $this->conexion->mensajeError();
+				return $this->error;
+			}
+			
+			$lista = new ArrayObject();
+			
+			while ($registro = $this->conexion->siguiente($consulta)) {
+				$gastosPorDepartamento = new GastosPorDepartamentoBean();
+				$gastosPorDepartamento->setId($registro['id']);
+				$gastosPorDepartamento->setNumeroDepartamento($registro['numeroDepartamento']);
+				$gastosPorDepartamento->setPeriodo($registro['periodo']);
+				$gastosPorDepartamento->setNumeroBoleta($registro['numeroBoleta']);
+				$gastosPorDepartamento->setMonto($registro['monto']);
+				$gastosPorDepartamento->setEstado($registro['pagado']);
+				$gastosPorDepartamento->setFechaVencimiento($registro['fechaVencimiento']);
+				
+				$lista->append($gastosPorDepartamento);
+			}
+			
+			return $lista;
 		}
 		
 		public function insert($gastosPorDepartamento) {
